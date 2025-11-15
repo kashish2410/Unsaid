@@ -1,0 +1,48 @@
+<div class="view-post">
+    <div class="posts">
+        <% for(let post of allPosts){ %>
+        <div class="post">
+            <div class="post-head">
+                <div class="user-img"></div>
+                <h2><a href="user/<%- post.username %>"><%- post.username %></a></h2>
+            </div>
+
+        <div class="post-content">
+            <div class="post-body">
+                <div class="post-msg"><%- post.content %></div>
+                <div class="post-time"><% if (post.edited) { %>
+                            <p><i>Edited on: 
+                                <%- post.editedAt.toLocaleDateString('en-GB') %>,
+                                <%- post.editedAt.toLocaleTimeString('en-GB', {
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                    hour12: false
+                                }) %></i>
+                            </p>
+                            <% } else { %>
+                            <p>Posted on: <%- post.createdAt.toLocaleDateString('en-GB') %>,
+                                            <%- post.createdAt.toLocaleTimeString('en-GB', {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit',
+                                                    hour12: false
+                                            }) %>
+                            </p>
+                            <% } %>
+                </div>
+            </div>
+            <div class="like-comment">
+                <i class="fa-regular fa-heart fa-xl fa-before" onclick="like(this)" style="color: #000000;"></i>
+                <i class="fa-solid fa-heart fa-xl fa-after" onclick="unlike(this)" style="color: #db0a0a;"></i>
+                <i class="fa-regular fa-comment-dots fa-xl" style="color: #BB8588;"></i>
+            </div>
+        </div>  
+        </div>       
+    <% } %>
+    </div>
+    <div class="icon">
+        <a href="http://localhost:2415/unsaid/create"><img src="../write.png" alt=""></a>
+    </div>
+</div>
+
+
+
