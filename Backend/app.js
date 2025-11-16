@@ -12,9 +12,8 @@ const session = require("express-session");
 
 app.engine("ejs",ejsMate);
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "../Frontend/views/ejs"));
-
-app.use(express.static(path.join(__dirname,"../Frontend/public")));
+app.set("views", path.join(__dirname, "views/ejs"));
+app.use(express.static(path.join(__dirname,"public")));
 app.use(express.urlencoded({extended:true}));
 app.use(methodOverride("_method"));
 
@@ -34,7 +33,7 @@ app.use((req, res, next) => {
 
 
 app.use(expressLayouts);
-app.set('layout', path.join(__dirname, '../Frontend/views/layouts/boilerplate'));
+app.set('layout', path.join(__dirname, 'views/layouts/boilerplate'));
 
 app.use("/api/auth", authRoutes);
 
