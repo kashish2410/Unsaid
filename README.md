@@ -1,27 +1,68 @@
-# 🌙 UNSAID — A Space for the Thoughts We Don’t Say Out Loud
+# 🌙 UNSAID — Where feelings find Ink
 
-Unsaid is a minimal, diary-style web application where users can express their thoughts openly.  
-It focuses on simplicity, clean UI, and smooth CRUD operations — letting users write, view, edit, and delete posts with ease.
+UnSaid is a full-stack web application where users can anonymously write, edit, and delete their thoughts. It works like a minimal diary platform where every post feels personal and raw.
 
+This project includes login/signup, sessions, CRUD operations, and a clean, aesthetic UI.
 ---
 
-## ✨ Features
-- 📝 Create a post  
-- 📖 View all posts  
-- ✏️ Edit a post  
-- ❌ Delete a post  
-- 📒 Diary-like font + calming aesthetic  
-- 🗃️ Posts stored in a database  
-- 🎯 Simple, distraction-free interface  
+## 🔥 Features
 
----
+### User Authentication
+
+ - Signup and Login with validation
+
+ - Sessions stored using express-session
+
+ - Redirects + error messages for invalid credentials
+
+### Posts
+
+ - Create new posts
+
+ - View all posts
+
+ - View posts by specific user
+
+ -  Edit posts
+
+ - Delete posts
+
+ - Latest posts appear first (descending order)
+
+### UI/UX
+
+ - Fully responsive
+
+ - Minimal handwriting diary vibes
+
+ - Custom logo: UnSaid
+
+ - Designed in HTML, CSS, EJS
 
 ## 🛠️ Tech Stack
-**Frontend:** HTML, CSS, JavaScript  
-**Backend:** Node.js + Express  
-**Database:** MongoDB  
+
+**Frontend:** HTML, CSS, JavaScript , EJS Templates
+**Backend:** Node.js , Express.js , Express-Session , BcryptJS (password hashing) , JWT (token generation) 
+**Database:** MongoDB , Mongoose
 **Tools:** VS Code, Git, GitHub
 
 ---
 
+# 💫 Future Enhancements
 
+ - Private posts feature
+
+ - User profile page
+
+ - Reset password
+
+ - Like/heart system
+
+ - Search bar
+
+ - Dark mode toggle
+
+# 📌 Author
+
+Kashish
+IT, B.Tech
