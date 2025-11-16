@@ -41,10 +41,10 @@ This project includes login/signup, sessions, CRUD operations, and a clean, aest
 
 ## 🛠️ Tech Stack
 
-**Frontend:** HTML, CSS, JavaScript , EJS Templates
-**Backend:** Node.js , Express.js , Express-Session , BcryptJS (password hashing) , JWT (token generation) 
-**Database:** MongoDB , Mongoose
-**Tools:** VS Code, Git, GitHub
+ - **Frontend:** HTML, CSS, JavaScript , EJS Templates
+ - **Backend:** Node.js , Express.js , Express-Session , BcryptJS (password hashing) , JWT (token generation) 
+ - **Database:** MongoDB , Mongoose
+ - **Tools:** VS Code, Git, GitHub
 
 ---
 
