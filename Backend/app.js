@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const app = express();
 const path = require("path");
@@ -21,7 +22,7 @@ app.use(methodOverride("_method"));
 app.use(express.json());
 
 app.use(session({
-    secret: "unsaid_secret",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true
 }));
@@ -44,7 +45,7 @@ then(()=>{
 .catch(err => console.log(err));
 
 async function main() {
-  await mongoose.connect('mongodb://127.0.0.1:27017/unsaid');
+    await mongoose.connect(process.env.MONGO_URL);
 }
 
 //view All
