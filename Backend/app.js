@@ -49,7 +49,8 @@ async function main() {
 
 //view All
 app.get("/unsaid/viewAll",async (req,res)=>{
-    let allPosts = await Posts.find({});
+    let allPosts = await Posts.find({}).sort({ createdAt: -1 });
+
     res.render("index", {allPosts});
 })
 
@@ -61,7 +62,7 @@ app.get("/unsaid/create",isLoggedIn, (req,res)=>{
 app.post("/unsaid/create", isLoggedIn, async (req,res)=>{
     try{
         let username = req.session.user.username;
-        let { content } = req.body;
+        let {content } = req.body;
 
         let newPost = new Posts({
             username,
@@ -78,18 +79,6 @@ app.post("/unsaid/create", isLoggedIn, async (req,res)=>{
     }
 });
 
-//view specific username
-app.get("/unsaid/user/:username", async (req, res) => {
-    const { username } = req.params;
-    const posts = await Posts.find({ username });
-
-    if (posts.length === 0) {
-        return res.render("empty");
-    }
-
-    res.render("view", { posts });
-});
-
 
 //delete post
 app.delete("/unsaid/:id/delete", isLoggedIn, async (req, res) => {
@@ -100,7 +89,7 @@ app.delete("/unsaid/:id/delete", isLoggedIn, async (req, res) => {
         return res.status(404).send("Post not found");
     }
 
-    res.redirect(`/unsaid/user/${deletedPost.username}`);
+    res.redirect(`/unsaid/myPosts`);
 });
 
 
@@ -120,8 +109,7 @@ app.put("/unsaid/:id",isLoggedIn, async(req,res)=>{
             edited : true, 
             editedAt : Date.now()
         }, {new : true} );
-    console.log(post);
-    res.redirect(`/unsaid/user/${post.username}`);
+    res.redirect(`/unsaid/myPosts`);
 })
 
 app.get("/unsaid/login", (req, res)=>{
@@ -148,13 +136,13 @@ app.get("/unsaid/myPosts", isLoggedIn, async (req, res) => {
     }
 
     const username = req.session.user.username;
-    const posts = await Posts.find({ username });
+    const posts = await Posts.find({ username }).sort({ createdAt: -1 });
 
     if (posts.length === 0) {
         return res.render("empty");
     }
 
-    res.render("index", { allPosts: posts });
+    res.render("view", { posts });
 });
 
 

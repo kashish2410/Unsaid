@@ -321,7 +321,7 @@ nav{
     padding-bottom: 0rem;
 }
 
-.post-head h2 a{
+.post-head h2{
     align-self: flex-start;
     margin-bottom: 0rem;
     margin-top: 0rem;
@@ -330,10 +330,6 @@ nav{
     letter-spacing: 0.15rem;
     font-size: 1.8rem;
     text-decoration: none;
-}
-
-.post-head h2 a:hover{
-    color:#484b3d;
 }
 
 .post-content{
