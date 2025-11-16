@@ -6,18 +6,36 @@ const methodOverride = require("method-override");
 const expressLayouts = require('express-ejs-layouts');
 const Posts = require("./models/post");
 const ejsMate = require("ejs-mate");
+const authRoutes = require("./routes/auth");
+const session = require("express-session");
 
-
+app.engine("ejs",ejsMate);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "../Frontend/views/ejs"));
+
 app.use(express.static(path.join(__dirname,"../Frontend/public")));
 app.use(express.urlencoded({extended:true}));
 app.use(methodOverride("_method"));
-app.engine("ejs",ejsMate);
+
+
+app.use(express.json());
+
+app.use(session({
+    secret: "unsaid_secret",
+    resave: false,
+    saveUninitialized: true
+}));
+
+app.use((req, res, next) => {
+    res.locals.showLayout = true; 
+    next();
+});
 
 
 app.use(expressLayouts);
 app.set('layout', path.join(__dirname, '../Frontend/views/layouts/boilerplate'));
+
+app.use("/api/auth", authRoutes);
 
 main().
 then(()=>{
@@ -32,47 +50,49 @@ async function main() {
 //view All
 app.get("/unsaid/viewAll",async (req,res)=>{
     let allPosts = await Posts.find({});
-    res.render("index", { showLayout: true , allPosts});
+    res.render("index", {allPosts});
 })
 
 //create new
-app.get("/unsaid/create",(req,res)=>{
-    res.render("create",{ showLayout: true });
+app.get("/unsaid/create",isLoggedIn, (req,res)=>{
+    res.render("create");
 })
 
-app.post("/unsaid/create",(req,res)=>{
+app.post("/unsaid/create", isLoggedIn, async (req,res)=>{
     try{
-        let {username, content} = req.body;
+        let username = req.session.user.username;
+        let { content } = req.body;
+
         let newPost = new Posts({
-            username: username,
-            content: content,
+            username,
+            content
         });
-    newPost.save().then((res)=>{
+
+        await newPost.save();
         console.log("Post Added");
-    })
-        .catch((err)=>{
-            console.log("error");
-        })
-    res.redirect("/unsaid/viewAll");
+
+        res.redirect("/unsaid/viewAll");
     }
     catch(err){
         console.log(err);
     }
-})
+});
 
 //view specific username
-app.get("/unsaid/user/:username", async (req, res)=>{
-    let {username} = req.params;
-    let Post= await Posts.find({username: username});
-    console.log(Post);
-    if(Post.length === 0){
-        return res.render("empty" ,{ showLayout: true });
+app.get("/unsaid/user/:username", async (req, res) => {
+    const { username } = req.params;
+    const posts = await Posts.find({ username });
+
+    if (posts.length === 0) {
+        return res.render("empty");
     }
-    res.render("view", {showLayout: true, Post});
-})
+
+    res.render("view", { posts });
+});
+
 
 //delete post
-app.delete("/unsaid/:id/delete", async (req, res) => {
+app.delete("/unsaid/:id/delete", isLoggedIn, async (req, res) => {
     let { id } = req.params;
     let deletedPost = await Posts.findByIdAndDelete(id);
 
@@ -85,13 +105,13 @@ app.delete("/unsaid/:id/delete", async (req, res) => {
 
 
 //edit post
-app.get("/unsaid/post/:id",  async (req, res)=>{
+app.get("/unsaid/post/:id",isLoggedIn, async (req, res)=>{
     let {id} = req.params;
     let post = await Posts.findById(id);
-    res.render("edit", {showLayout: true, post});
+    res.render("edit", {post});
 })
 
-app.put("/unsaid/:id", async(req,res)=>{
+app.put("/unsaid/:id",isLoggedIn, async(req,res)=>{
     let {id} = req.params;
     let {content : newContent} = req.body;
     let post = await Posts.findByIdAndUpdate(id,
@@ -105,12 +125,38 @@ app.put("/unsaid/:id", async(req,res)=>{
 })
 
 app.get("/unsaid/login", (req, res)=>{
-    res.render("login",{ showLayout: false });
+    res.locals.showLayout = false;
+    res.render("login", { msg: req.query.msg });
 })
 
 app.get("/unsaid/signUp", (req, res)=>{
-    res.render("signUp",{ showLayout: false });
+    res.locals.showLayout = false;
+    res.render("signUp", { msg: req.query.msg });
 })
+
+
+function isLoggedIn(req, res, next) {
+    if (!req.session.user) {
+        return res.redirect("/unsaid/login");
+    }
+    next();
+}
+
+app.get("/unsaid/myPosts", isLoggedIn, async (req, res) => {
+    if (!req.session.user) {
+        return res.redirect("/unsaid/login");
+    }
+
+    const username = req.session.user.username;
+    const posts = await Posts.find({ username });
+
+    if (posts.length === 0) {
+        return res.render("empty");
+    }
+
+    res.render("index", { allPosts: posts });
+});
+
 
 const port = 2415;
 

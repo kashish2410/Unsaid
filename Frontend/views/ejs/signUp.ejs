@@ -7,20 +7,35 @@
             </span>
             <span class="said">Said</span>
         </h1>
+
         <h4>Where feelings find Ink</h4>
+
         <div class="signUp-container">
-            <form class="login-form">
-                <input type="text" id="name" placeholder="Enter Your Name" required>
+            <% if (typeof msg !== "undefined") { %>
+    <p class="error" style="color:red; margin-bottom:10px; font-size: 1.3rem;"><%= msg %></p>
+<% } %>
+
+            <form action="/api/auth/signup" method="POST" class="login-form">
+
+                <!-- FIX: backend expects 'username' -->
+                <input type="text" id="username" placeholder="Enter Your Name" name="username" required>
                 <br><br>
-                <input type="email" id="email" placeholder="Enter Email" required>
+
+                <input type="email" id="email" placeholder="Enter Email" name="email" required>
                 <br><br>
-                <input type="password" id="pass" placeholder="Enter Password">
+
+                <!-- FIX: backend expects 'password' -->
+                <input type="password" id="password" placeholder="Enter Password" name="password" required>
                 <br><br>
-                <input type="password" id="Conpass" placeholder="Confirm Password">
+
+                <!-- confirm password (optional check in frontend later) -->
+                <input type="password" id="confirmPass" placeholder="Confirm Password" required>
                 <br><br>
-                <button class="submit-btn">SIGN UP</button>
+
+                <!-- FIX: remove onclick -->
+                <button class="submit-btn" type="submit">SIGN UP</button>
+
             </form>
         </div>
-     </div>
+    </div>
 </section>
-
