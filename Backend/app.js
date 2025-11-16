@@ -147,8 +147,10 @@ app.get("/unsaid/myPosts", isLoggedIn, async (req, res) => {
 });
 
 
-const port = 2415;
+const port = process.env.PORT || 2415;
 
-app.listen(port, ()=>{
-    console.log(`${port} working`);
-})
+app.get("/", (req, res) => {
+    res.redirect("/unsaid/viewAll");
+});
+
+app.listen(port, ()=>console.log(`Server running on port ${port}`));
