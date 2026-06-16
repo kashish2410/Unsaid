@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 // SECRET for JWT
-const JWT_SECRET = "unsaid_secret_key"; // you can change later
+const JWT_SECRET = "unsaid_secret_key"; 
 
 // Signup 
 router.post("/signup", async (req, res) => {
